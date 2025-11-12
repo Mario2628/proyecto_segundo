@@ -6,7 +6,7 @@
   <title>Café Aroma — Servicios & Menú</title>
 
   <!-- Favicon tacita -->
-  <link rel="icon" type="image/svg+xml"
+  <link rel="icon" type="image/svg+xml"  
         href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="%236f4e37"/><text x="8" y="50" font-size="44">☕</text></svg>' />
 
   <!-- Bootstrap & Icons -->
@@ -90,6 +90,12 @@
 
     /* Talleres */
     .work-img{height:220px;object-fit:cover;border-radius:14px}
+
+    /* ====== PARCHE: menú móvil como overlay para que no empuje el carrusel ====== */
+    @media (max-width: 991.98px){
+      .overlay-menu{position:fixed; top:56px; left:0; right:0; background:var(--moka); padding:1rem 0; z-index:1040;}
+      .overlay-menu.collapsing{height:auto!important; transition:none;}
+    }
   </style>
 </head>
 <body>
@@ -123,7 +129,7 @@
 </header>
 
 <!-- ===== MENÚ (solo dock lateral) ===== -->
-<section id="menu" class="section">
+<section id="menu-sec" class="section">
   <div id="menu-wrap" class="container">
     <div class="dock-toggle">
       <button id="openDock" class="btn btn-outline-dark btn-sm"><i class="bi bi-list"></i> Abrir menú</button>
@@ -477,7 +483,7 @@
 
   document.getElementById('openDock')?.addEventListener('click', ()=>{ new bootstrap.Offcanvas('#dockDrawer').show(); });
 
-  const menuSection = document.getElementById('menu');
+  const menuSection = document.getElementById('menu-sec'); // ← corregido (antes '#menu')
   const observer = new IntersectionObserver(([entry])=>{
     document.querySelector('.dock-wrap')?.classList.toggle('vis', entry.isIntersecting);
   },{root:null,threshold:0});
@@ -488,6 +494,18 @@
   /* Carrusel auto 5s */
   const galeria = document.getElementById('galeria');
   if (galeria) new bootstrap.Carousel(galeria, {interval: 5000, ride: 'carousel', pause: false});
+
+  /* ====== PARCHE JS: convertir el collapse del NAV en overlay en móvil ====== */
+  (function(){
+    const navCollapse = document.querySelector('.navbar .collapse');
+    if(!navCollapse) return;
+    navCollapse.addEventListener('show.bs.collapse', () => {
+      navCollapse.classList.add('overlay-menu');
+    });
+    navCollapse.addEventListener('hidden.bs.collapse', () => {
+      navCollapse.classList.remove('overlay-menu');
+    });
+  })();
 </script>
 </body>
 </html>
