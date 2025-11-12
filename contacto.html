@@ -5,190 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contacto · Café Aroma</title>
 
-  <!-- Fuente y reset mínimo -->
+  <!-- Favicon tacita (exactamente como indicaste) -->
+  <link rel="icon" type="image/svg+xml"
+        href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="%236f4e37"/><text x="8" y="50" font-size="44">☕</text></svg>' />
+
+  <!-- Fuente -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      --c-bg:#FAE7DB;             /* fondo crema suave */
-      --c-paper:#F7EFE7;          /* tarjetas */
-      --c-accent:#C6865D;         /* botones primarios */
-      --c-accent-2:#8B5E3C;       /* café oscuro */
-      --c-ink:#2b1d17;            /* texto principal */
-      --c-muted:#6c564b;          /* texto secundario */
-      --shadow:0 10px 30px rgba(0,0,0,.10);
-      --radius:18px;
+      --c-bg:#FAE7DB; --c-paper:#F7EFE7; --c-accent:#C6865D; --c-accent-2:#8B5E3C;
+      --c-ink:#2b1d17; --c-muted:#6c564b; --shadow:0 10px 30px rgba(0,0,0,.10); --radius:18px;
     }
-
     *{box-sizing:border-box}
     html,body{margin:0}
-    body{
-      font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      color:var(--c-ink);
-      background:var(--c-bg);
-    }
+    body{font-family:Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial; color:var(--c-ink); background:var(--c-bg)}
 
     /* ====== Header fijo ====== */
-    .topbar{
-      position:sticky; top:0; z-index:1000;
-      background: #6F4E37;            /* cinta café */
-      backdrop-filter: blur(6px);
-      color:#fff;
-      box-shadow: 0 2px 0 rgba(0,0,0,.04);
-    }
-    .nav{
-      max-width:1200px; margin:auto;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 18px;
-    }
-    .brand{
-      display:flex; gap:10px; align-items:center; font-weight:700; letter-spacing:.2px;
-    }
-    .brand i{
-      width:22px; height:22px; display:inline-block; border-radius:50%;
-      background: radial-gradient(#fff 0 35%, #b58b6a 36% 100%);
-      box-shadow: inset 0 0 0 2px rgba(255,255,255,.35);
-    }
+    .topbar{position:sticky; top:0; z-index:1000; background:#6F4E37; backdrop-filter:blur(6px); color:#fff; box-shadow:0 2px 0 rgba(0,0,0,.04)}
+    .nav{max-width:1200px; margin:auto; display:flex; align-items:center; justify-content:space-between; padding:14px 18px}
+    .brand{display:flex; gap:10px; align-items:center; font-weight:700; letter-spacing:.2px}
+    .brand i{width:22px; height:22px; display:inline-block; border-radius:50%;
+      background: radial-gradient(#fff 0 35%, #b58b6a 36% 100%); box-shadow: inset 0 0 0 2px rgba(255,255,255,.35)}
     .menu{display:flex; gap:26px; align-items:center;}
-    .menu a{
-      color:#fff; text-decoration:none; font-weight:600; opacity:.95;
-    }
+    .menu a{color:#fff; text-decoration:none; font-weight:600; opacity:.95}
     .menu a:hover{opacity:1; text-decoration:underline; text-underline-offset:6px}
 
+    /* Botón hamburguesa — OCULTO en escritorio, visible sólo en móvil */
+    .menu-toggle{
+      display:none; border:1px solid rgba(255,255,255,.45); background:transparent; color:#fff;
+      width:54px; height:54px; border-radius:14px; align-items:center; justify-content:center; cursor:pointer;
+    }
+    .menu-toggle svg{width:26px;height:26px}
+
+    /* Panel móvil (oculto por defecto) */
+    .mobile-panel{
+      display:none; background:#6F4E37; color:#fff;
+    }
+    .mobile-panel a{
+      display:block; padding:14px 18px; color:#fff; text-decoration:none; font-weight:600;
+    }
+    .mobile-panel a:hover{background:rgba(255,255,255,.08)}
+
+    @media (max-width:768px){
+      .menu{display:none;}              /* ocultar menú horizontal en móvil */
+      .menu-toggle{display:flex;}       /* mostrar hamburguesa SOLO en móvil */
+      .mobile-panel{display:none;}      /* se abre por JS */
+      .mobile-panel.open{display:block;}
+    }
+
     /* ====== Hero con imagen ====== */
-    .hero{
-      position:relative;
-      min-height:46vh;
-      display:grid; place-items:center; text-align:center;
-      color:#fff;
-      overflow:hidden;
-      background:#000;
-    }
-    .hero::before{
-      content:"";
-      position:absolute; inset:0;
+    .hero{position:relative; min-height:46vh; display:grid; place-items:center; text-align:center; color:#fff; overflow:hidden; background:#000}
+    .hero::before{content:""; position:absolute; inset:0;
       background:url('https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
-      filter:grayscale(.12) contrast(1.05) brightness(.9);
-      transform:scale(1.02);
-    }
-    .hero::after{
-      content:""; position:absolute; inset:0;
-      background:linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.55));
-    }
-    .hero .wrap{
-      position:relative; z-index:1; padding:64px 18px 74px;
-      max-width:1100px;
-    }
-    .kicker{
-      font-weight:600; letter-spacing:.18em; text-transform:uppercase; opacity:.92;
-    }
-    .title{
-      font-size:clamp(28px, 4vw + 10px, 56px);
-      margin:.25em 0 .2em; font-weight:800;
-      text-shadow:0 2px 10px rgba(0,0,0,.25);
-    }
+      filter:grayscale(.12) contrast(1.05) brightness(.9); transform:scale(1.02)}
+    .hero::after{content:""; position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.55))}
+    .hero .wrap{position:relative; z-index:1; padding:64px 18px 74px; max-width:1100px}
+    .kicker{font-weight:600; letter-spacing:.18em; text-transform:uppercase; opacity:.92}
+    .title{font-size:clamp(28px, 4vw + 10px, 56px); margin:.25em 0 .2em; font-weight:800; text-shadow:0 2px 10px rgba(0,0,0,.25)}
     .subtitle{opacity:.92; font-size:clamp(16px, 1.3vw + 8px, 22px)}
 
     /* ====== Contenedor ====== */
     .container{max-width:1200px; margin:auto; padding:38px 18px 80px;}
 
     /* ====== Grid contacto ====== */
-    .grid{
-      display:grid; gap:22px;
-      grid-template-columns: 1.3fr .9fr;
-    }
-    @media (max-width:980px){ .grid{grid-template-columns: 1fr; } }
+    .grid{display:grid; gap:22px; grid-template-columns: 1.3fr .9fr;}
+    @media (max-width:980px){ .grid{grid-template-columns: 1fr;} }
 
-    .card{
-      background:var(--c-paper);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-    }
+    .card{background:var(--c-paper); border-radius:var(--radius); box-shadow:var(--shadow)}
     .card.pad{padding:26px;}
     .card h3{margin:0 0 18px; font-size:26px}
     .card .muted{color:var(--c-muted)}
 
     /* ====== Form ====== */
     .form label{display:block; font-weight:600; margin:14px 0 8px}
-    .input, .textarea{
-      width:100%; border:none; outline:none;
-      background:#fff; color:var(--c-ink);
-      border-radius:14px; padding:16px 14px;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.06);
-      transition:.2s;
-    }
+    .input, .textarea{width:100%; border:none; outline:none; background:#fff; color:var(--c-ink); border-radius:14px; padding:16px 14px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); transition:.2s}
     .input:focus, .textarea:focus{box-shadow: inset 0 0 0 2px var(--c-accent)}
     .textarea{min-height:160px; resize:vertical}
-
-    .btn{
-      appearance:none; border:none; outline:0; cursor:pointer;
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:14px 22px; border-radius:14px; font-weight:700;
-      background:linear-gradient(135deg, var(--c-accent), #b87246);
-      color:#fff; box-shadow: 0 10px 20px rgba(198,134,93,.35);
-      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
-      width:100%;
-    }
-    .btn:hover{transform:translateY(-1px)}
-    .btn i{filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+    .btn{appearance:none; border:none; outline:0; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      padding:14px 22px; border-radius:14px; font-weight:700; background:linear-gradient(135deg, var(--c-accent), #b87246);
+      color:#fff; box-shadow: 0 10px 20px rgba(198,134,93,.35); transition: transform .12s ease, filter .12s ease, box-shadow .12s ease; width:100%}
+    .btn:hover{transform:translateY(-1px)} .btn i{filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
 
     /* ====== Tarjetas info a la derecha ====== */
     .stack{display:grid; gap:18px}
-    .info{
-      display:flex; align-items:center; gap:16px; padding:18px 20px;
-      background:#fff; border-radius:14px; box-shadow:var(--shadow);
-    }
-    .ico{
-      width:48px; height:48px; border-radius:50%;
-      display:grid; place-items:center;
-      background:var(--c-paper); color:var(--c-accent-2);
-      box-shadow: 0 6px 18px rgba(0,0,0,.08);
-      flex: 0 0 48px;
-    }
+    .info{display:flex; align-items:center; gap:16px; padding:18px 20px; background:#fff; border-radius:14px; box-shadow:var(--shadow)}
+    .ico{width:48px; height:48px; border-radius:50%; display:grid; place-items:center; background:var(--c-paper); color:var(--c-accent-2);
+      box-shadow: 0 6px 18px rgba(0,0,0,.08); flex:0 0 48px}
+
+    /* Tel enlace mantiene estilo */
+    .tel-link{color:inherit; text-decoration:none}
+    .tel-link:hover{text-decoration:underline; text-underline-offset:3px}
 
     /* ====== Mapa ====== */
-    .map{
-      margin-top:22px; border-radius: var(--radius);
-      overflow:hidden; box-shadow:var(--shadow);
-      background:#fff;
-    }
+    .map{margin-top:22px; border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); background:#fff}
     .map iframe{width:100%; height:380px; border:0}
 
     /* ====== Footer ====== */
-    footer{
-      background:#6F4E37; color:#fff; position:relative; z-index:1;
-    }
-    .foot{
-      max-width:1200px; margin:auto; padding:18px;
-      display:flex; align-items:center; justify-content:space-between; gap:18px;
-    }
+    footer{background:#6F4E37; color:#fff; position:relative; z-index:1}
+    .foot{max-width:1200px; margin:auto; padding:18px; display:flex; align-items:center; justify-content:space-between; gap:18px}
     .foot .links{display:flex; gap:18px; align-items:center}
     .foot a{color:#fff; text-decoration:none; font-weight:600; opacity:.95}
     .foot a:hover{opacity:1; text-decoration:underline; text-underline-offset:6px}
 
     /* ====== WhatsApp FAB ====== */
-    .wa-fab{
-      position:fixed; right:18px; bottom:18px; z-index:9999;
-      display:flex; align-items:center; gap:12px;
-    }
-    .wa-chip{
-      background:#24D366; color:#062b10; font-weight:800;
-      border-radius:999px; padding:14px 18px; box-shadow:0 10px 25px rgba(36,211,102,.35);
-      display:none; align-items:center; gap:10px;
-    }
+    .wa-fab{position:fixed; right:18px; bottom:18px; z-index:9999; display:flex; align-items:center; gap:12px}
+    .wa-chip{background:#24D366; color:#062b10; font-weight:800; border-radius:999px; padding:14px 18px; box-shadow:0 10px 25px rgba(36,211,102,.35); display:none; align-items:center; gap:10px}
     .wa-chip b{color:#fff}
-    .wa-btn{
-      width:60px; height:60px; border-radius:50%;
-      display:grid; place-items:center; background:#25D366; color:#fff;
-      box-shadow:0 10px 25px rgba(36,211,102,.35); cursor:pointer; border:none;
-    }
-    .wa-btn:active{transform:translateY(1px)}
-    .wa-btn svg{width:28px; height:28px; fill:#fff}
-
-    @media (min-width:720px){
-      .wa-chip{display:flex}
-    }
+    .wa-btn{width:60px; height:60px; border-radius:50%; display:grid; place-items:center; background:#25D366; color:#fff;
+      box-shadow:0 10px 25px rgba(36,211,102,.35); cursor:pointer; border:none}
+    .wa-btn:active{transform:translateY(1px)} .wa-btn svg{width:28px; height:28px; fill:#fff}
+    @media (min-width:720px){ .wa-chip{display:flex} }
   </style>
 </head>
 <body>
@@ -197,13 +125,33 @@
   <header class="topbar">
     <nav class="nav">
       <div class="brand"><i></i> Café Aroma</div>
+
+      <!-- Menú horizontal (escritorio) -->
       <div class="menu">
         <a href="index.html">Inicio</a>
         <a href="acerca.html">Acerca de</a>
         <a href="servicios.html">Servicios</a>
         <a href="contacto.html" style="opacity:1;text-decoration:underline;text-underline-offset:6px">Contacto</a>
       </div>
+
+      <!-- Hamburguesa SOLO en móvil -->
+      <button class="menu-toggle" id="menuBtn" aria-label="Abrir menú" title="Menú">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
     </nav>
+
+    <!-- Panel móvil -->
+    <div id="mobilePanel" class="mobile-panel">
+      <a href="index.html">Inicio</a>
+      <a href="acerca.html">Acerca de</a>
+      <a href="servicios.html">Servicios</a>
+      <a href="contacto.html">Contacto</a>
+    </div>
   </header>
 
   <!-- Hero con imagen -->
@@ -222,25 +170,25 @@
       <!-- Formulario -->
       <div class="card pad">
         <h3>Envíanos un Mensaje</h3>
-        <form class="form" onsubmit="event.preventDefault(); alert('¡Gracias! Te contactaremos pronto.'); this.reset();">
+        <form id="contactForm" class="form">
           <label for="name">Nombre *</label>
-          <input id="name" class="input" type="text" placeholder="Tu nombre" required>
+          <input id="name" name="name" class="input" type="text" placeholder="Tu nombre" required autocomplete="name">
 
           <label for="email">Correo Electrónico *</label>
-          <input id="email" class="input" type="email" placeholder="tu@email.com" required>
+          <input id="email" name="email" class="input" type="email" placeholder="tu@email.com" required autocomplete="email">
 
           <label for="subject">Asunto *</label>
-          <input id="subject" class="input" type="text" placeholder="¿En qué podemos ayudarte?" required>
+          <input id="subject" name="subject" class="input" type="text" placeholder="¿En qué podemos ayudarte?" required>
 
           <label for="msg">Mensaje *</label>
-          <textarea id="msg" class="textarea" placeholder="Escribe tu mensaje aquí..." required></textarea>
+          <textarea id="msg" name="msg" class="textarea" placeholder="Escribe tu mensaje aquí..." required></textarea>
 
           <button class="btn" type="submit">
             <i>📨</i> Enviar Mensaje
           </button>
         </form>
 
-        <!-- Mapa (previsualización) -->
+        <!-- Mapa -->
         <div class="map card" aria-label="Mapa Camelia 213, León Gto">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3721.5976038420467!2d-101.68865352496566!3d21.128603080545748!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x842bbf6d636433c5%3A0xc5505e0e55c33fd!2sCamelia%20213%2C%20Obregon%2C%2037320%20Le%C3%B3n%20de%20los%20Aldama%2C%20Gto.!5e0!3m2!1ses-419!2smx!4v1762446026267!5m2!1ses-419!2smx"
@@ -265,7 +213,7 @@
             <div class="ico">📞</div>
             <div>
               <strong>Teléfono</strong><br>
-              +52 479 100 4544
+              <a class="tel-link" href="tel:+524791004544">+52 479 100 4544</a>
             </div>
           </div>
 
@@ -313,9 +261,7 @@
 
   <!-- WhatsApp FAB fijo -->
   <div class="wa-fab">
-    <div class="wa-chip">
-      ⚡ <b>RESERVA AHORA</b>
-    </div>
+    <div class="wa-chip">⚡ <b>RESERVA AHORA</b></div>
     <button class="wa-btn" aria-label="WhatsApp"
             onclick="openWhats('Hola, me gustaría reservar, ¿hay disponibilidad?')">
       <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M19.11 17.6c-.27-.14-1.59-.78-1.84-.87-.25-.09-.43-.14-.62.14-.18.27-.71.86-.87 1.03-.16.18-.32.2-.59.07-.27-.14-1.12-.41-2.13-1.31-.79-.7-1.32-1.56-1.48-1.82-.16-.27-.02-.41.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.62-1.49-.85-2.04-.22-.53-.45-.46-.62-.46h-.53c-.18 0-.48.07-.73.34s-.96.94-.96 2.3.99 2.67 1.14 2.86c.14.18 1.95 2.98 4.73 4.18.66.28 1.18.45 1.58.58.66.21 1.26.18 1.73.11.53-.08 1.59-.65 1.81-1.28.23-.63.23-1.18.16-1.28-.07-.11-.25-.18-.52-.32zM16.03 3.2c-7.1 0-12.86 5.77-12.86 12.87 0 2.27.59 4.49 1.72 6.44l-1.83 6.7 6.87-1.8c1.88 1.03 4 1.57 6.1 1.57 7.1 0 12.87-5.77 12.87-12.87S23.13 3.2 16.03 3.2zm0 23.46c-1.88 0-3.72-.5-5.33-1.44l-.38-.23-4.07 1.07 1.09-3.98-.25-.41a10.71 10.71 0 0 1-1.65-5.66c0-5.93 4.83-10.76 10.76-10.76s10.76 4.83 10.76 10.76-4.83 10.76-10.76 10.76z"/></svg>
@@ -323,14 +269,57 @@
   </div>
 
   <script>
-    // Teléfono y función para abrir WhatsApp con mensaje
-    const WA_PHONE = '524791004544'; // 52 + 4791004544
-
+    // Teléfono WhatsApp
+    const WA_PHONE = '524791004544';
     function openWhats(text){
       const msg = encodeURIComponent(text || 'Hola, me gustaría reservar, ¿hay disponibilidad?');
-      const url = `https://wa.me/${WA_PHONE}?text=${msg}`;
-      window.open(url, '_blank');
+      window.open(`https://wa.me/${WA_PHONE}?text=${msg}`, '_blank');
     }
+
+    // ===== Menú móvil (hamburguesa sólo en móvil) =====
+    const btn = document.getElementById('menuBtn');
+    const panel = document.getElementById('mobilePanel');
+    btn?.addEventListener('click', () => panel.classList.toggle('open'));
+
+    // Cerrar panel al navegar
+    panel?.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>panel.classList.remove('open')));
+
+    // ===== Envío real del formulario a Google Apps Script =====
+    // Sustituye por tu URL desplegada si la cambias
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzgC7ub2-FQrNIakbF64oZka8VFtw9WdJDeZECNOP6C9cGi1EVoFkJvjI43XpguSfNVfg/exec';
+
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const data = Object.fromEntries(fd.entries());
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      const old = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i>⏳</i> Enviando...';
+
+      try {
+        const resp = await fetch(GAS_URL, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            subject: data.subject,
+            message: data.msg
+          })
+        });
+        if(!resp.ok) throw new Error('Error enviando el mensaje');
+        alert('¡Gracias! Te contactaremos a la brevedad por correo o WhatsApp.');
+        e.target.reset();
+      } catch(err){
+        alert('Hubo un problema al enviar. Inténtalo nuevamente en unos minutos.');
+        console.error(err);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = old;
+      }
+    });
   </script>
 </body>
 </html>
